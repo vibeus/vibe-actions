@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for action in run-codebuild; do
+  npx ncc build ${action}/src/index.ts -o ${action}/dist/
+done

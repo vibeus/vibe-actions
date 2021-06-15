@@ -1,0 +1,12 @@
+name: "Run Codebuild"
+description: "Run Codebuild project."
+inputs:
+  projects:
+    description: "Comma separated project names to build."
+    required: true
+  ref:
+    description: "Commit to build"
+    required: true
+runs:
+  using: "node12"
+  main: "dist/index.js"
