@@ -6,12 +6,23 @@ const LOOP_WAIT = 5000;
 
 function getCodeBuildParams(): CodeBuild.Types.StartBuildInput[] {
   const ref = getInput("ref", { required: true });
+  const imageOverrides = getInput("image_overrides", { required: false }).split(",");
+
   return getInput("projects", { required: true })
     .split(",")
-    .map((x) => ({
-      projectName: x.trim(),
-      sourceVersion: ref,
-    }));
+    .map((x, i) => {
+      const o = {
+        projectName: x.trim(),
+        sourceVersion: ref,
+      };
+
+      const imageOverride = imageOverrides[i]?.trim();
+      if (imageOverride) {
+        return Object.assign({}, o, { imageOverride });
+      }
+
+      return o;
+    });
 }
 
 function getCloudWatchParams(build: CodeBuild.Types.Build): CloudWatchLogs.Types.GetLogEventsRequest | null {

@@ -7,6 +7,9 @@ inputs:
   ref:
     description: "Commit to build"
     required: true
+  image_overrides:
+    description: "Override project image"
+    required: false
 runs:
   using: "node12"
   main: "dist/index.js"
