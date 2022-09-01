@@ -6,7 +6,10 @@
   "scripts": {
     "format": "prettier --write .",
     "lint": "prettier --check .; eslint */src/**/*.ts",
-    "test": "mocha -r ts-node/register **/*.spec.ts"
+    "test": "mocha -r ts-node/register **/*.spec.ts",
+    "build:run-codebuild": "ncc build run-codebuild/src/index.ts -o run-codebuild/dist/",
+    "build:app-token-gen": "ncc build app-token-gen/src/index.ts -o app-token-gen/dist/",
+    "build": "concurrently 'npm run build:run-codebuild' 'npm run build:app-token-gen'"
   },
   "repository": {
     "type": "git",
@@ -19,6 +22,8 @@
   },
   "homepage": "https://github.com/vibeus/vibe-actions#readme",
   "devDependencies": {
+    "@octokit/auth-app": "^4.0.5",
+    "@octokit/rest": "^19.0.4",
     "@types/chai": "^4.3.3",
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.7.14",
@@ -26,6 +31,7 @@
     "@typescript-eslint/parser": "^5.36.1",
     "@vercel/ncc": "^0.34.0",
     "chai": "^4.3.6",
+    "concurrently": "^7.3.0",
     "eslint": "^8.23.0",
     "mocha": "^10.0.0",
     "prettier": "^2.7.1",
