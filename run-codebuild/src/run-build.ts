@@ -7,18 +7,29 @@ const LOOP_WAIT = 5000;
 function getCodeBuildParams(): CodeBuild.Types.StartBuildInput[] {
   const ref = getInput("ref", { required: true });
   const imageOverrides = getInput("image_overrides", { required: false }).split(",");
+  const cacheOverrides = getInput("cache_overrides", { required: false }).split(",");
 
   return getInput("projects", { required: true })
     .split(",")
     .map((x, i) => {
-      const o = {
+      let o = {
         projectName: x.trim(),
         sourceVersion: ref,
       };
 
       const imageOverride = imageOverrides[i]?.trim();
       if (imageOverride) {
-        return Object.assign({}, o, { imageOverride });
+        o = Object.assign({}, o, { imageOverride });
+      }
+
+      const cacheOverride = cacheOverrides[i]?.trim();
+      if (cacheOverride) {
+        o = Object.assign({}, o, {
+          cacheOverride: {
+            type: "S3",
+            location: cacheOverride,
+          },
+        });
       }
 
       return o;

@@ -10,6 +10,9 @@ inputs:
   image_overrides:
     description: "Override project image"
     required: false
+  cache_overrides:
+    description: "Override s3 cache locations"
+    required: false
 runs:
   using: "node12"
   main: "dist/index.js"
